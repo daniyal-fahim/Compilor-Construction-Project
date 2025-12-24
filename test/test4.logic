@@ -1,0 +1,5 @@
+expr (A | B) & !C;
+set A = 1;
+set B = 1;
+set C = 0;
+eval;

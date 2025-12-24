@@ -1,0 +1,3 @@
+rule1: A & B -> C;
+rule2: C | D -> E;
+infer rule1, rule2;

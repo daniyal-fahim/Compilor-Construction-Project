@@ -1,0 +1,2 @@
+expr (A | B) & !C;
+table;

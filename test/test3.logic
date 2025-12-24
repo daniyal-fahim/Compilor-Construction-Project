@@ -1,0 +1,4 @@
+expr A -> B;
+set A = 1;
+set B = 0;
+eval;
