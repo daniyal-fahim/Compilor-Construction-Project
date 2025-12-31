@@ -1,0 +1,7 @@
+rule1: A & B;
+rule2: A | B;
+expr (rule1 -> rule2) & 1;
+set A = 1;
+set B = 0;
+eval;
+

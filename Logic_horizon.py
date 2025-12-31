@@ -17,35 +17,31 @@ from src.interpreter import Interpreter
 
 def print_stage_header(stage_name):
     """Print a clean header for each compiler stage"""
-    print("\n" + "=" * 60)
-    print(f"  {stage_name}")
-    print("=" * 60)
+    print(f"\n===== {stage_name} =====")
 
 def lexicalAnalysis(source_code):
     """
     STAGE 1: LEXICAL ANALYSIS (SCANNER)
     Converts source code into tokens
     """
-    print_stage_header("STAGE 1: LEXICAL ANALYSIS")
+    print_stage_header("LEXICAL ANALYSIS")
     
     try:
         lexer = Lexer(source_code)
         tokens = lexer.tokenize()
         
         # Display tokens (excluding EOF for cleaner output)
-        token_count = 0
         for token in tokens:
             if token.type != 'EOF':
-                print(f"  Token: {token.type:<12} Value: {token.value:<10} Pos: {token.line}:{token.column}")
-                token_count += 1
+                print(f"Token: {token.type:<12} ({token.value})")
         
-        print(f"\n  Total Tokens Generated: {token_count}")
-        print("  Status: ✓ Lexical Analysis Successful")
+        print(f"Total Tokens: {len([t for t in tokens if t.type != 'EOF'])}")
+        print("Status: SUCCESS")
         return tokens
     
     except Exception as e:
-        print(f"  Status: ✗ Lexical Error")
-        print(f"  Error: {e}")
+        print(f"Status: FAILED")
+        print(f"Error: {e}")
         return None
 
 def syntaxAnalysis(tokens):
@@ -53,7 +49,7 @@ def syntaxAnalysis(tokens):
     STAGE 2: SYNTAX ANALYSIS (PARSER)
     Constructs Abstract Syntax Tree (AST) from tokens
     """
-    print_stage_header("STAGE 2: SYNTAX ANALYSIS")
+    print_stage_header("SYNTAX ANALYSIS")
     
     try:
         parser = Parser(tokens)
@@ -61,21 +57,20 @@ def syntaxAnalysis(tokens):
         
         # Display parse summary
         stmt_count = len(ast.statements)
-        print(f"  Parsing Input Tokens...")
-        print(f"  Abstract Syntax Tree Created")
-        print(f"  Total Statements: {stmt_count}")
+        print(f"Parsing Tokens into AST...")
+        print(f"Statements Parsed: {stmt_count}")
         
         # Display statement types
         for i, stmt in enumerate(ast.statements, 1):
-            stmt_type = stmt.__class__.__name__
-            print(f"    Statement {i}: {stmt_type}")
+            stmt_type = stmt.__class__.__name__.replace('Stmt', '')
+            print(f"  Statement {i}: {stmt_type}")
         
-        print("  Status: ✓ Syntax Analysis Successful")
+        print("Status: SUCCESS - Syntax is valid")
         return ast
     
     except Exception as e:
-        print(f"  Status: ✗ Syntax Error")
-        print(f"  Error: {e}")
+        print(f"Status: FAILED - Syntax Error")
+        print(f"Error: {e}")
         return None
 
 def semanticAnalysis(ast):
@@ -83,28 +78,27 @@ def semanticAnalysis(ast):
     STAGE 3: SEMANTIC ANALYSIS
     Validates semantic correctness of the program
     """
-    print_stage_header("STAGE 3: SEMANTIC ANALYSIS")
+    print_stage_header("SEMANTIC ANALYSIS")
     
     try:
         analyzer = SemanticAnalyzer()
         analyzer.visit(ast)
         
         # Display semantic analysis results
-        print(f"  Checking Semantic Rules...")
-        print(f"  Variables Declared: {len(analyzer.declared_vars)}")
+        print(f"Checking Semantic Rules...")
+        
         if analyzer.declared_vars:
-            print(f"    {', '.join(sorted(analyzer.declared_vars))}")
+            print(f"Variables Declared: {', '.join(sorted(analyzer.declared_vars))}")
         
-        print(f"  Rules Defined: {len(analyzer.defined_rules)}")
         if analyzer.defined_rules:
-            print(f"    {', '.join(sorted(analyzer.defined_rules))}")
+            print(f"Rules Defined: {', '.join(sorted(analyzer.defined_rules))}")
         
-        print("  Status: ✓ Semantic Analysis Successful")
+        print("Status: SUCCESS - No semantic errors")
         return True
     
     except Exception as e:
-        print(f"  Status: ✗ Semantic Error")
-        print(f"  Error: {e}")
+        print(f"Status: FAILED - Semantic Error")
+        print(f"Error: {e}")
         return False
 
 def generateIntermediateCode(ast):
@@ -112,32 +106,30 @@ def generateIntermediateCode(ast):
     STAGE 4: INTERMEDIATE CODE GENERATION
     Generates Three-Address Code (3AC) from AST
     """
-    print_stage_header("STAGE 4: INTERMEDIATE CODE GENERATION")
+    print_stage_header("INTERMEDIATE CODE GENERATION")
     
     try:
         ir_generator = IRGenerator()
         all_code = []
         
-        print("  Generating Three-Address Code (3AC)...")
-        
         for stmt in ast.statements:
             code = ir_generator.generate(stmt)
             all_code.extend(code)
         
-        # Display generated code
+        # Display generated code - print once, not in loop
         if all_code:
-            print(f"\n  Generated 3AC Instructions: {len(all_code)}")
-            for i, instruction in enumerate(all_code, 1):
-                print(f"    {i:2d}. {instruction}")
+            for instruction in all_code:
+                print(f"{instruction}")
         else:
-            print("  No intermediate code generated")
+            print("(No intermediate code generated)")
         
-        print("\n  Status: ✓ Intermediate Code Generation Successful")
+        print(f"Total Instructions: {len(all_code)}")
+        print("Status: SUCCESS")
         return all_code
     
     except Exception as e:
-        print(f"  Status: ✗ IR Generation Error")
-        print(f"  Error: {e}")
+        print(f"Status: FAILED")
+        print(f"Error: {e}")
         return None
 
 def optimizeCode(intermediate_code):
@@ -145,54 +137,50 @@ def optimizeCode(intermediate_code):
     STAGE 5: CODE OPTIMIZATION (OPTIONAL)
     Applies peephole optimizations to intermediate code
     """
-    print_stage_header("STAGE 5: CODE OPTIMIZATION")
+    print_stage_header("CODE OPTIMIZATION")
     
     try:
         optimizer = Optimizer()
         optimized = optimizer.optimize(intermediate_code)
         
         # Check if any optimizations were applied
-        changes = sum(1 for i, (orig, opt) in enumerate(zip(intermediate_code, optimized)) if orig != opt)
+        changes = sum(1 for orig, opt in zip(intermediate_code, optimized) if orig != opt)
         
-        print(f"  Applying Peephole Optimizations...")
-        print(f"  Original Instructions: {len(intermediate_code)}")
-        print(f"  Optimized Instructions: {len(optimized)}")
-        print(f"  Optimizations Applied: {changes}")
+        print(f"Applying Peephole Optimizations...")
+        print(f"Optimizations Applied: {changes}")
         
         if changes > 0:
-            print("\n  Optimization Examples:")
-            count = 0
-            for orig, opt in zip(intermediate_code, optimized):
-                if orig != opt and count < 3:  # Show max 3 examples
-                    print(f"    Before: {orig}")
-                    print(f"    After:  {opt}")
-                    count += 1
+            # Show optimized code
+            print("Optimized Code:")
+            for instruction in optimized:
+                print(f"  {instruction}")
+        else:
+            print("No optimizations needed")
         
-        print("\n  Status: ✓ Code Optimization Successful")
+        print("Status: SUCCESS")
         return optimized
     
     except Exception as e:
-        print(f"  Status: ✗ Optimization Error")
-        print(f"  Error: {e}")
+        print(f"Status: FAILED")
+        print(f"Error: {e}")
         return intermediate_code
 
-def executeCode(optimized_code, interpreter):
+def generateTargetCode(optimized_code, interpreter):
     """
-    STAGE 6: CODE EXECUTION
-    Executes the optimized intermediate code
+    STAGE 6: TARGET CODE GENERATION / EXECUTION
+    Executes the optimized intermediate code and generates output
     """
-    print_stage_header("STAGE 6: CODE EXECUTION / OUTPUT")
+    print_stage_header("TARGET CODE / OUTPUT")
     
     try:
-        print("  Executing Optimized Code...")
-        print()
+        # Execute the code - the interpreter will print the actual output
         interpreter.execute(optimized_code)
-        print("\n  Status: ✓ Execution Completed")
+        print("Status: SUCCESS")
         return True
     
     except Exception as e:
-        print(f"  Status: ✗ Execution Error")
-        print(f"  Error: {e}")
+        print(f"Status: FAILED")
+        print(f"Error: {e}")
         return False
 
 # ============================================================================
@@ -202,43 +190,44 @@ def executeCode(optimized_code, interpreter):
 def compileAndRun(source_code, interpreter, verbose=True):
     """
     Main compilation pipeline - orchestrates all compiler stages
+    Each stage executes in strict order and prints output exactly once
     """
     if verbose:
-        print("\n" + "╔" + "=" * 58 + "╗")
-        print("║" + " " * 10 + "LOGICHORIZON COMPILER - COMPILATION PIPELINE" + " " * 3 + "║")
-        print("╚" + "=" * 58 + "╝")
+        print("\n" + "=" * 65)
+        print("  LOGICHORIZON COMPILER - COMPILATION PIPELINE")
+        print("=" * 65)
     
-    # STAGE 1: Lexical Analysis
+    # STAGE 1: Lexical Analysis (runs first)
     tokens = lexicalAnalysis(source_code)
     if not tokens:
         return False
     
-    # STAGE 2: Syntax Analysis
+    # STAGE 2: Syntax Analysis (runs only if lexical analysis succeeds)
     ast = syntaxAnalysis(tokens)
     if not ast:
         return False
     
-    # STAGE 3: Semantic Analysis
+    # STAGE 3: Semantic Analysis (runs only if syntax is valid)
     if not semanticAnalysis(ast):
         return False
     
-    # STAGE 4: Intermediate Code Generation
+    # STAGE 4: Intermediate Code Generation (runs after semantic checks)
     intermediate_code = generateIntermediateCode(ast)
     if not intermediate_code:
         return False
     
-    # STAGE 5: Code Optimization
+    # STAGE 5: Code Optimization (optional - runs before target code gen)
     optimized_code = optimizeCode(intermediate_code)
     if not optimized_code:
         return False
     
-    # STAGE 6: Code Execution
-    success = executeCode(optimized_code, interpreter)
+    # STAGE 6: Target Code Generation (runs last)
+    success = generateTargetCode(optimized_code, interpreter)
     
     if verbose and success:
-        print("\n" + "=" * 60)
-        print("  COMPILATION AND EXECUTION COMPLETED SUCCESSFULLY")
-        print("=" * 60 + "\n")
+        print("\n" + "=" * 65)
+        print("  COMPILATION COMPLETED SUCCESSFULLY")
+        print("=" * 65 + "\n")
     
     return success
 
@@ -256,9 +245,9 @@ def process_input(text, interpreter):
 
 def repl():
     """Interactive Read-Eval-Print Loop"""
-    print("\n" + "╔" + "=" * 58 + "╗")
-    print("║" + " " * 8 + "LogicHorizon Compiler v1.0 - REPL Mode" + " " * 9 + "║")
-    print("╚" + "=" * 58 + "╝")
+    print("\n" + "=" * 65)
+    print("  LogicHorizon Compiler v1.0 - REPL Mode")
+    print("=" * 65)
     print("\n  Commands:")
     print("    Type your LogicHorizon code and end with ';'")
     print("    Type 'exit' to quit")
@@ -341,9 +330,9 @@ def main():
                 return
             
             # Display source code
-            print("╔" + "=" * 58 + "╗")
-            print("║" + " " * 20 + "SOURCE CODE" + " " * 27 + "║")
-            print("╚" + "=" * 58 + "╝")
+            print("=" * 65)
+            print("  SOURCE CODE")
+            print("=" * 65)
             for i, line in enumerate(source_code.strip().split('\n'), 1):
                 print(f"  {i:2d} | {line}")
             
