@@ -19,6 +19,72 @@ def print_stage_header(stage_name):
     """Print a clean header for each compiler stage"""
     print(f"\n===== {stage_name} =====")
 
+def visualizeAST(node, prefix="", is_last=True, is_root=True):
+    """
+    Recursively visualize AST nodes in a tree format
+    """
+    from src.ast_nodes import Program, ExprStmt, SetStmt, TableStmt, EvalStmt, RuleStmt, InferStmt
+    from src.ast_nodes import BinaryOp, UnaryOp, Var, Literal
+    
+    if is_root:
+        print("Abstract Syntax Tree:")
+        print("  " + node.__class__.__name__)
+        prefix = "  "
+        is_root = False
+    
+    # Determine connector
+    connector = "+-- " if is_last else "|-- "
+    
+    # Handle different node types
+    if isinstance(node, Program):
+        for i, stmt in enumerate(node.statements):
+            is_last_stmt = (i == len(node.statements) - 1)
+            visualizeAST(stmt, prefix, is_last_stmt, False)
+    
+    elif isinstance(node, ExprStmt):
+        name_part = f" (name: {node.name})" if node.name else ""
+        print(f"{prefix}{connector}ExprStmt{name_part}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.expr, new_prefix, True, False)
+    
+    elif isinstance(node, SetStmt):
+        val_str = "1" if node.value else "0"
+        print(f"{prefix}{connector}SetStmt: {node.name} = {val_str}")
+    
+    elif isinstance(node, TableStmt):
+        target = node.target_id if node.target_id else "LAST_EXPR"
+        print(f"{prefix}{connector}TableStmt: {target}")
+    
+    elif isinstance(node, EvalStmt):
+        print(f"{prefix}{connector}EvalStmt")
+    
+    elif isinstance(node, RuleStmt):
+        print(f"{prefix}{connector}RuleStmt: {node.name}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.expr, new_prefix, True, False)
+    
+    elif isinstance(node, InferStmt):
+        rules = ", ".join(node.rule_names)
+        print(f"{prefix}{connector}InferStmt: {rules}")
+    
+    elif isinstance(node, BinaryOp):
+        print(f"{prefix}{connector}BinaryOp: {node.op}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.left, new_prefix, False, False)
+        visualizeAST(node.right, new_prefix, True, False)
+    
+    elif isinstance(node, UnaryOp):
+        print(f"{prefix}{connector}UnaryOp: {node.op}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.operand, new_prefix, True, False)
+    
+    elif isinstance(node, Var):
+        print(f"{prefix}{connector}Var: {node.name}")
+    
+    elif isinstance(node, Literal):
+        val_str = "1" if node.value else "0"
+        print(f"{prefix}{connector}Literal: {val_str}")
+
 def lexicalAnalysis(source_code):
     """
     STAGE 1: LEXICAL ANALYSIS (SCANNER)
@@ -44,7 +110,73 @@ def lexicalAnalysis(source_code):
         print(f"Error: {e}")
         return None
 
-def syntaxAnalysis(tokens):
+def visualizeAST(node, prefix="", is_last=True, is_root=True):
+    """
+    Recursively visualize AST nodes in a tree format
+    """
+    from src.ast_nodes import Program, ExprStmt, SetStmt, TableStmt, EvalStmt, RuleStmt, InferStmt
+    from src.ast_nodes import BinaryOp, UnaryOp, Var, Literal
+    
+    if is_root:
+        print("Abstract Syntax Tree:")
+        print("  " + node.__class__.__name__)
+        prefix = "  "
+        is_root = False
+    
+    # Determine connector
+    connector = "+-- " if is_last else "|-- "
+    
+    # Handle different node types
+    if isinstance(node, Program):
+        for i, stmt in enumerate(node.statements):
+            is_last_stmt = (i == len(node.statements) - 1)
+            visualizeAST(stmt, prefix, is_last_stmt, False)
+    
+    elif isinstance(node, ExprStmt):
+        name_part = f" (name: {node.name})" if node.name else ""
+        print(f"{prefix}{connector}ExprStmt{name_part}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.expr, new_prefix, True, False)
+    
+    elif isinstance(node, SetStmt):
+        val_str = "1" if node.value else "0"
+        print(f"{prefix}{connector}SetStmt: {node.name} = {val_str}")
+    
+    elif isinstance(node, TableStmt):
+        target = node.target_id if node.target_id else "LAST_EXPR"
+        print(f"{prefix}{connector}TableStmt: {target}")
+    
+    elif isinstance(node, EvalStmt):
+        print(f"{prefix}{connector}EvalStmt")
+    
+    elif isinstance(node, RuleStmt):
+        print(f"{prefix}{connector}RuleStmt: {node.name}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.expr, new_prefix, True, False)
+    
+    elif isinstance(node, InferStmt):
+        rules = ", ".join(node.rule_names)
+        print(f"{prefix}{connector}InferStmt: {rules}")
+    
+    elif isinstance(node, BinaryOp):
+        print(f"{prefix}{connector}BinaryOp: {node.op}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.left, new_prefix, False, False)
+        visualizeAST(node.right, new_prefix, True, False)
+    
+    elif isinstance(node, UnaryOp):
+        print(f"{prefix}{connector}UnaryOp: {node.op}")
+        new_prefix = prefix + ("    " if is_last else "|   ")
+        visualizeAST(node.operand, new_prefix, True, False)
+    
+    elif isinstance(node, Var):
+        print(f"{prefix}{connector}Var: {node.name}")
+    
+    elif isinstance(node, Literal):
+        val_str = "1" if node.value else "0"
+        print(f"{prefix}{connector}Literal: {val_str}")
+
+def syntaxAnalysis(tokens, show_ast=False):
     """
     STAGE 2: SYNTAX ANALYSIS (PARSER)
     Constructs Abstract Syntax Tree (AST) from tokens
@@ -64,6 +196,12 @@ def syntaxAnalysis(tokens):
         for i, stmt in enumerate(ast.statements, 1):
             stmt_type = stmt.__class__.__name__.replace('Stmt', '')
             print(f"  Statement {i}: {stmt_type}")
+        
+        # Visualize AST if requested
+        if show_ast:
+            print()
+            visualizeAST(ast)
+            print()
         
         print("Status: SUCCESS - Syntax is valid")
         return ast
@@ -187,7 +325,7 @@ def generateTargetCode(optimized_code, interpreter):
 #                         MAIN COMPILATION FUNCTION
 # ============================================================================
 
-def compileAndRun(source_code, interpreter, verbose=True):
+def compileAndRun(source_code, interpreter, verbose=True, show_ast=False):
     """
     Main compilation pipeline - orchestrates all compiler stages
     Each stage executes in strict order and prints output exactly once
@@ -203,7 +341,7 @@ def compileAndRun(source_code, interpreter, verbose=True):
         return False
     
     # STAGE 2: Syntax Analysis (runs only if lexical analysis succeeds)
-    ast = syntaxAnalysis(tokens)
+    ast = syntaxAnalysis(tokens, show_ast=show_ast)
     if not ast:
         return False
     
@@ -252,11 +390,13 @@ def repl():
     print("    Type your LogicHorizon code and end with ';'")
     print("    Type 'exit' to quit")
     print("    Type 'verbose' to toggle verbose mode")
+    print("    Type 'ast' to toggle AST visualization")
     print()
     
     interpreter = Interpreter()
     buffer = ""
     verbose = False  # REPL mode is less verbose by default
+    show_ast = False  # AST visualization off by default
     
     while True:
         try:
@@ -276,12 +416,17 @@ def repl():
                 print(f"  Verbose mode: {'ON' if verbose else 'OFF'}\n")
                 continue
             
+            if line.strip() == 'ast' or line.strip() == 'show-ast':
+                show_ast = not show_ast
+                print(f"  AST visualization: {'ON' if show_ast else 'OFF'}\n")
+                continue
+            
             buffer += line + "\n"
             
             if ';' in line:
                 # Process complete statements
                 if verbose:
-                    compileAndRun(buffer, interpreter, verbose=True)
+                    compileAndRun(buffer, interpreter, verbose=True, show_ast=show_ast)
                 else:
                     # Quick mode - just show execution results
                     try:
@@ -289,6 +434,13 @@ def repl():
                         tokens = lexer.tokenize()
                         parser = Parser(tokens)
                         ast = parser.parse()
+                        
+                        # Show AST if requested even in quick mode
+                        if show_ast:
+                            print("\nAbstract Syntax Tree:")
+                            visualizeAST(ast)
+                            print()
+                        
                         semantic = SemanticAnalyzer()
                         semantic.visit(ast)
                         ir_gen = IRGenerator()
@@ -338,7 +490,9 @@ def main():
             
             # Compile and execute
             interpreter = Interpreter()
-            compileAndRun(source_code, interpreter, verbose=True)
+            # Check for --ast flag
+            show_ast = '--ast' in sys.argv or '-a' in sys.argv
+            compileAndRun(source_code, interpreter, verbose=True, show_ast=show_ast)
         else:
             print(f"  ✗ Error: File not found: {filename}\n")
             print("  Usage: python Logic_horizon.py <filename.logic> [--verbose]\n")
