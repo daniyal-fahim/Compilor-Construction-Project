@@ -1,12 +1,12 @@
-# Project Overview: LogicEval Compiler
+# Project Overview: LogicHorizon Compiler
 
 ## 1. Purpose of the Compiler
 
-The **LogicEval** compiler is a domain-specific language (DSL) processor designed for evaluating boolean logic expressions and generating truth tables. This pedagogical compiler serves as a comprehensive demonstration of fundamental compiler construction principles and techniques. The system accepts boolean expressions with variables, evaluates them under specified or all possible variable assignments, and outputs truth tables or computed results. The compiler provides both batch processing capabilities for source files and an interactive Read-Eval-Print Loop (REPL) for dynamic expression evaluation.
+The **LogicHorizon** compiler is a domain-specific language (DSL) processor designed for evaluating boolean logic expressions and generating truth tables. This pedagogical compiler serves as a comprehensive demonstration of fundamental compiler construction principles and techniques. The system accepts boolean expressions with variables, evaluates them under specified or all possible variable assignments, and outputs truth tables or computed results. The compiler provides both batch processing capabilities for source files and an interactive Read-Eval-Print Loop (REPL) for dynamic expression evaluation.
 
 ## 2. Programming Language and Tools
 
-The LogicEval compiler is implemented in **Python 3**, leveraging Python's object-oriented features, dataclasses for abstract syntax tree (AST) node representation, and standard libraries for pattern matching and iteration. The implementation emphasizes clarity and educational value, making the compiler architecture transparent and accessible for academic study.
+The LogicHorizon compiler is implemented in **Python 3**, leveraging Python's object-oriented features, dataclasses for abstract syntax tree (AST) node representation, and standard libraries for pattern matching and iteration. The implementation emphasizes clarity and educational value, making the compiler architecture transparent and accessible for academic study.
 
 ### Key Python Features Utilized:
 - **Dataclasses**: AST node definitions with type annotations
@@ -16,7 +16,7 @@ The LogicEval compiler is implemented in **Python 3**, leveraging Python's objec
 
 ## 3. High-Level Architecture
 
-The LogicEval compiler follows the classical multi-phase compiler architecture, implementing all six fundamental phases of compilation:
+The LogicHorizon compiler follows the classical multi-phase compiler architecture, implementing all six fundamental phases of compilation:
 
 ### 3.1 Frontend Phases
 
@@ -117,12 +117,12 @@ Output (Truth Tables, Expression Values, Inference Results)
 
 ## 5. Module Interaction and Dependencies
 
-The LogicEval compiler is organized as a modular system with clear separation of concerns:
+The LogicHorizon compiler is organized as a modular system with clear separation of concerns:
 
 ### 5.1 Core Module Hierarchy
 
 ```
-logiceval.py (Main Entry Point)
+logichorizon.py (Main Entry Point)
     |
     ├── src/lexer.py (Lexical Analysis)
     |       └── Produces: Token stream
@@ -152,7 +152,7 @@ logiceval.py (Main Entry Point)
 
 ### 5.2 Module Interactions
 
-**logiceval.py (Main Driver)**
+**logichorizon.py (Main Driver)**
 - Orchestrates the compilation pipeline
 - Implements REPL functionality
 - Coordinates module invocation in proper sequence
@@ -206,8 +206,8 @@ Output (Results, Truth Tables)
 
 ## 6. Compilation vs. Interpretation
 
-While structured as a compiler with distinct compilation phases, LogicEval ultimately functions as an **interpreted system**. The final phase executes 3AC instructions directly rather than generating native machine code or bytecode. This hybrid architecture—compilation frontend with interpretation backend—is pedagogically valuable for demonstrating compiler construction principles while maintaining implementation simplicity.
+While structured as a compiler with distinct compilation phases, LogicHorizon ultimately functions as an **interpreted system**. The final phase executes 3AC instructions directly rather than generating native machine code or bytecode. This hybrid architecture—compilation frontend with interpretation backend—is pedagogically valuable for demonstrating compiler construction principles while maintaining implementation simplicity.
 
 ## 7. Summary
 
-The LogicEval compiler exemplifies classical compiler architecture, implementing all fundamental phases from lexical analysis through execution. Its modular design, clear separation of concerns, and straightforward implementation make it an effective educational tool for understanding compiler construction. The system successfully processes boolean logic expressions through a complete compilation pipeline, demonstrating practical applications of parsing theory, semantic analysis, intermediate representations, optimization techniques, and runtime interpretation.
+The LogicHorizon compiler exemplifies classical compiler architecture, implementing all fundamental phases from lexical analysis through execution. Its modular design, clear separation of concerns, and straightforward implementation make it an effective educational tool for understanding compiler construction. The system successfully processes boolean logic expressions through a complete compilation pipeline, demonstrating practical applications of parsing theory, semantic analysis, intermediate representations, optimization techniques, and runtime interpretation.

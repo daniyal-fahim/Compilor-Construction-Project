@@ -1,8 +1,8 @@
-# Compiler Stages: LogicEval Implementation
+# Compiler Stages: LogicHorizon Implementation
 
 ## Introduction
 
-This document provides a detailed examination of each compilation stage in the LogicEval compiler, including theoretical foundations, implementation details, and the transformations performed at each phase. The LogicEval compiler implements all six classical phases of compilation, demonstrating a complete compilation pipeline from source text to executable intermediate representation.
+This document provides a detailed examination of each compilation stage in the LogicHorizon compiler, including theoretical foundations, implementation details, and the transformations performed at each phase. The LogicHorizon compiler implements all six classical phases of compilation, demonstrating a complete compilation pipeline from source text to executable intermediate representation.
 
 ---
 
@@ -84,7 +84,7 @@ Output: [
 
 ### Theoretical Foundation
 
-Syntax analysis verifies that the token sequence conforms to the language grammar and constructs an Abstract Syntax Tree (AST). The LogicEval parser implements a **recursive descent parser** based on an LL(1) grammar, where parsing decisions are made by examining one token of lookahead.
+Syntax analysis verifies that the token sequence conforms to the language grammar and constructs an Abstract Syntax Tree (AST). The LogicHorizon parser implements a **recursive descent parser** based on an LL(1) grammar, where parsing decisions are made by examining one token of lookahead.
 
 ### Grammar Specification (EBNF)
 
@@ -192,7 +192,7 @@ Program(
 
 ### Theoretical Foundation
 
-Semantic analysis performs context-sensitive checks that cannot be expressed in context-free grammars. This phase ensures type correctness, variable declarations, scope resolution, and semantic constraints. The LogicEval analyzer implements the **Visitor Pattern** for AST traversal.
+Semantic analysis performs context-sensitive checks that cannot be expressed in context-free grammars. This phase ensures type correctness, variable declarations, scope resolution, and semantic constraints. The LogicHorizon analyzer implements the **Visitor Pattern** for AST traversal.
 
 ### Implementation: `src/semantic.py`
 
@@ -219,7 +219,7 @@ Semantic analysis performs context-sensitive checks that cannot be expressed in 
    - Error: `"Inference on undefined rule 'X'"`
 
 3. **Variable Usage Tracking**
-   - LogicEval allows implicit variable declaration
+   - LogicHorizon allows implicit variable declaration
    - Variables in expressions need not be explicitly declared
    - `set` statements register variables in symbol table
 
@@ -257,7 +257,7 @@ Output: Semantic errors detected and raised
 
 ### Theoretical Foundation
 
-Intermediate code generation translates the AST into an intermediate representation (IR) that is machine-independent and facilitates optimization. The LogicEval compiler generates **Three-Address Code (3AC)**, a linearized form where each instruction performs at most one operation and has up to three operands.
+Intermediate code generation translates the AST into an intermediate representation (IR) that is machine-independent and facilitates optimization. The LogicHorizon compiler generates **Three-Address Code (3AC)**, a linearized form where each instruction performs at most one operation and has up to three operands.
 
 ### Three-Address Code Format
 
@@ -266,7 +266,7 @@ Intermediate code generation translates the AST into an intermediate representat
 result = operator operand1 operand2
 ```
 
-**LogicEval 3AC Instructions:**
+**LogicHorizon 3AC Instructions:**
 
 | Instruction Format | Description | Example |
 |-------------------|-------------|---------|
@@ -342,7 +342,7 @@ t2 = OR t1 C
 
 ### Theoretical Foundation
 
-Code optimization transforms intermediate code to improve execution efficiency while preserving semantic equivalence. The LogicEval optimizer performs **peephole optimization**, examining small windows of instructions to apply local transformations based on algebraic identities.
+Code optimization transforms intermediate code to improve execution efficiency while preserving semantic equivalence. The LogicHorizon optimizer performs **peephole optimization**, examining small windows of instructions to apply local transformations based on algebraic identities.
 
 ### Implementation: `src/optimizer.py`
 
@@ -431,7 +431,7 @@ The current optimizer performs single-pass peephole optimization. More advanced 
 
 ### Theoretical Foundation
 
-The final phase executes the optimized intermediate code. Unlike traditional compilers that generate machine code, LogicEval interprets 3AC directly. The interpreter maintains a runtime environment with variable bindings and implements specialized execution modes.
+The final phase executes the optimized intermediate code. Unlike traditional compilers that generate machine code, LogicHorizon interprets 3AC directly. The interpreter maintains a runtime environment with variable bindings and implements specialized execution modes.
 
 ### Implementation: `src/interpreter.py`
 
@@ -537,4 +537,4 @@ Each phase operates independently with well-defined input/output contracts, demo
 
 ## Conclusion
 
-The LogicEval compiler implements a complete, pedagogically-oriented compilation pipeline. Each phase demonstrates fundamental compiler construction techniques: finite automata in lexical analysis, recursive descent parsing, tree-based semantic checking, AST-to-IR translation, peephole optimization, and direct interpretation. This architecture provides a comprehensive foundation for understanding modern compiler implementation.
+The LogicHorizon compiler implements a complete, pedagogically-oriented compilation pipeline. Each phase demonstrates fundamental compiler construction techniques: finite automata in lexical analysis, recursive descent parsing, tree-based semantic checking, AST-to-IR translation, peephole optimization, and direct interpretation. This architecture provides a comprehensive foundation for understanding modern compiler implementation.

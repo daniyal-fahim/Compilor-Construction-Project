@@ -22,7 +22,7 @@ class SemanticAnalyzer:
         self.visit(node.expr)
 
     def visit_SetStmt(self, node: SetStmt):
-        # In LogicEval, 'set' implicitly declares a variable if not seen before,
+        # In LogicHorizon, 'set' implicitly declares a variable if not seen before,
         # or updates it. So we just track it.
         self.declared_vars.add(node.name)
 
@@ -57,6 +57,6 @@ class SemanticAnalyzer:
         pass
 
     def visit_Var(self, node: Var):
-        # LogicEval allows using variables in expressions without prior 'set'.
+        # LogicHorizon allows using variables in expressions without prior 'set'.
         # They are just free variables.
         pass

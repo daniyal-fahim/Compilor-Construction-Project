@@ -1,8 +1,8 @@
-# Parsing Techniques in LogicEval
+# Parsing Techniques in LogicHorizon
 
 ## 1. Introduction
 
-This document provides a comprehensive analysis of the parsing techniques employed in the LogicEval compiler. The parser transforms a flat token stream into a hierarchical Abstract Syntax Tree (AST) representation, validating syntactic correctness according to the language grammar. The LogicEval parser implements a **recursive descent parsing** strategy based on an LL(1) grammar with explicit operator precedence handling.
+This document provides a comprehensive analysis of the parsing techniques employed in the LogicHorizon compiler. The parser transforms a flat token stream into a hierarchical Abstract Syntax Tree (AST) representation, validating syntactic correctness according to the language grammar. The LogicHorizon parser implements a **recursive descent parsing** strategy based on an LL(1) grammar with explicit operator precedence handling.
 
 ---
 
@@ -10,7 +10,7 @@ This document provides a comprehensive analysis of the parsing techniques employ
 
 ### 2.1 Grammar Type
 
-The LogicEval grammar is classified as **LL(1)**:
+The LogicHorizon grammar is classified as **LL(1)**:
 - **LL**: Left-to-right scan, Leftmost derivation
 - **1**: One token lookahead suffices for parsing decisions
 
@@ -300,7 +300,7 @@ This demonstrates **repetition parsing** using a while loop to handle the `*` op
 
 ### 5.1 Precedence Climbing Technique
 
-Boolean expressions require precedence-aware parsing to correctly associate operators. LogicEval implements **precedence climbing** by encoding precedence levels in the grammar hierarchy:
+Boolean expressions require precedence-aware parsing to correctly associate operators. LogicHorizon implements **precedence climbing** by encoding precedence levels in the grammar hierarchy:
 
 **Precedence Table:**
 
@@ -644,11 +644,11 @@ The current implementation uses **panic mode recovery**:
 | **PEG Parser** | Handles ambiguity naturally | Backtracking overhead |
 | **Pratt Parsing** | Elegant precedence handling | Less familiar to students |
 
-### 9.2 Why Recursive Descent for LogicEval?
+### 9.2 Why Recursive Descent for LogicHorizon?
 
 1. **Educational Clarity**: Direct correspondence between grammar and code
 2. **Simplicity**: No external tools required
-3. **Grammar Compatibility**: LogicEval grammar is naturally LL(1)
+3. **Grammar Compatibility**: LogicHorizon grammar is naturally LL(1)
 4. **Maintainability**: Easy to modify and extend
 5. **Error Reporting**: Simple to provide detailed error messages
 
@@ -656,6 +656,6 @@ The current implementation uses **panic mode recovery**:
 
 ## 10. Conclusion
 
-The LogicEval parser demonstrates a well-structured implementation of recursive descent parsing with explicit precedence handling. The design choices—LL(1) grammar, precedence climbing, and single-pass parsing—provide an excellent balance of simplicity, efficiency, and educational value. The clear correspondence between grammar productions and parsing methods makes the parser easy to understand and maintain, while the O(n) time complexity ensures efficient processing of source programs.
+The LogicHorizon parser demonstrates a well-structured implementation of recursive descent parsing with explicit precedence handling. The design choices—LL(1) grammar, precedence climbing, and single-pass parsing—provide an excellent balance of simplicity, efficiency, and educational value. The clear correspondence between grammar productions and parsing methods makes the parser easy to understand and maintain, while the O(n) time complexity ensures efficient processing of source programs.
 
 The parsing technique successfully handles the core challenges of expression parsing: operator precedence, associativity, and syntactic ambiguity resolution. This implementation serves as a solid foundation for students learning compiler construction, demonstrating practical application of parsing theory in a real-world compiler context.

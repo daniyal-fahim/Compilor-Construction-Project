@@ -1,8 +1,8 @@
-# Charts and Diagrams: LogicEval Compiler
+# Charts and Diagrams: LogicHorizon Compiler
 
 ## 1. Introduction
 
-This document provides visual representations of the LogicEval compiler's architecture, workflows, and internal structures. These diagrams illustrate the compilation pipeline, data transformations, parsing algorithms, and execution flows to provide a comprehensive visual understanding of the system.
+This document provides visual representations of the LogicHorizon compiler's architecture, workflows, and internal structures. These diagrams illustrate the compilation pipeline, data transformations, parsing algorithms, and execution flows to provide a comprehensive visual understanding of the system.
 
 ---
 
@@ -12,7 +12,7 @@ This document provides visual representations of the LogicEval compiler's archit
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        LogicEval Compiler                       │
+│                        LogicHorizon Compiler                       │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │   ┌─────────────┐      ┌──────────────┐      ┌──────────────┐ │
@@ -671,7 +671,7 @@ EXAMPLE SESSION:
 │            MODULE DEPENDENCY GRAPH                   │
 └──────────────────────────────────────────────────────┘
 
-                 logiceval.py (Main)
+                 logichorizon.py (Main)
                        │
                        │ imports
         ┌──────────────┼──────────────┐
@@ -712,7 +712,7 @@ DEPENDENCY SUMMARY:
 ┌────────────────┬─────────────────────────────┐
 │ Module         │ Dependencies                │
 ├────────────────┼─────────────────────────────┤
-│ logiceval.py   │ All modules                 │
+│ logichorizon.py│ All modules                 │
 │ lexer.py       │ None (standalone)           │
 │ ast_nodes.py   │ None (data definitions)     │
 │ parser.py      │ lexer, ast_nodes            │
@@ -1534,7 +1534,7 @@ Operator precedence parsing uses a compact table of precedence relations (⋖, �
 
 ## 12. Summary
 
-This document has provided comprehensive visual representations of the LogicEval compiler's architecture, including:
+This document has provided comprehensive visual representations of the LogicHorizon compiler's architecture, including:
 
 1. **System Architecture**: High-level overview of compiler organization
 2. **Data Flow**: Token and AST transformation pipelines
@@ -1554,7 +1554,7 @@ This document has provided comprehensive visual representations of the LogicEval
     - LALR Parsing (state merging optimization)
     - Operator Precedence Parsing (expression-specific)
 
-These diagrams complement the textual documentation by providing intuitive visual models of compiler operation, facilitating deeper understanding of the LogicEval implementation for students and developers studying compiler construction.
+These diagrams complement the textual documentation by providing intuitive visual models of compiler operation, facilitating deeper understanding of the LogicHorizon implementation for students and developers studying compiler construction.
 
 1. **System Architecture**: High-level overview of compiler organization
 2. **Data Flow**: Token and AST transformation pipelines
@@ -1566,4 +1566,4 @@ These diagrams complement the textual documentation by providing intuitive visua
 8. **State Machines**: Interpreter state transitions
 9. **Memory Layout**: AST and runtime data structures
 
-These diagrams complement the textual documentation by providing intuitive visual models of compiler operation, facilitating deeper understanding of the LogicEval implementation for students and developers studying compiler construction.
+These diagrams complement the textual documentation by providing intuitive visual models of compiler operation, facilitating deeper understanding of the LogicHorizon implementation for students and developers studying compiler construction.

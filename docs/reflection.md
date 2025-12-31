@@ -1,9 +1,9 @@
-# Reflection: LogicEval Compiler Project
+# Reflection: LogicHorizon Compiler Project
 
 ## What was learned
 
 ### 1. Compiler Pipeline
-Building LogicEval reinforced the understanding of the standard compiler pipeline:
+Building LogicHorizon reinforced the understanding of the standard compiler pipeline:
 - **Lexical Analysis**: Converting raw text into a stream of tokens.
 - **Syntax Analysis**: Using a recursive descent parser to build an Abstract Syntax Tree (AST) from tokens.
 - **Semantic Analysis**: Validating the AST for correctness (e.g., checking for undefined rules).
@@ -24,4 +24,4 @@ The `table` command required a shift from single-pass execution to multi-pass ex
 Python proved to be an excellent language for prototyping a compiler due to its string handling capabilities and ease of defining data structures (AST nodes). However, for a production compiler, a statically typed language might offer better performance and safety.
 
 ## Conclusion
-This project successfully demonstrated the creation of a domain-specific language from scratch, covering all major phases of compilation. The resulting `LogicEval` compiler is a functional tool for boolean logic analysis.
+This project successfully demonstrated the creation of a domain-specific language from scratch, covering all major phases of compilation. The resulting `LogicHorizon` compiler is a functional tool for boolean logic analysis.
